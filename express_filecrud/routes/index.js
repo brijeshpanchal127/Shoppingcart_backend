@@ -31,7 +31,6 @@ router.get('/', function (req, res, next) {
 
 
 router.patch("/placeorder", function (req, res, next) {
-  console.log(req.body.items[0].name);
 
   req.body.items.map(item => {
     MongoClient.connect(url, { useUnifiedTopology: true },
@@ -53,4 +52,26 @@ router.patch("/placeorder", function (req, res, next) {
   });
   res.status(200).send("success");
 });
+
+
+router.post("/wishlist", function (req, res, next) {
+  console.log(req.body);
+
+
+    MongoClient.connect(url, { useUnifiedTopology: true },
+      function (err, db) {
+        if (err) {
+          throw err;
+        }
+        else {
+          var dbo = db.db("HABSTORES");
+          dbo.collection("wishlist").insertOne(req.body);
+        }
+
+      });
+
+  res.status(200).send("success");
+});
+
+
 module.exports = router;
